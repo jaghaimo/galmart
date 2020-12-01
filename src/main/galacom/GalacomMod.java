@@ -2,6 +2,8 @@ package galacom;
 
 import com.fs.starfarer.api.BaseModPlugin;
 
+import galacom.board.GalacomBoard;
+
 public class GalacomMod extends BaseModPlugin {
 
     @Override
