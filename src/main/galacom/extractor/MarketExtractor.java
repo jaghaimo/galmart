@@ -23,6 +23,11 @@ public abstract class MarketExtractor implements TableContent {
     }
 
     @Override
+    public Object[] getHeaders(float width) {
+        return getHeader(width, "", "");
+    }
+
+    @Override
     public List<Object[]> getRows() {
         List<Object[]> content = new ArrayList<>();
         for (MarketAPI market : markets) {
@@ -35,7 +40,15 @@ public abstract class MarketExtractor implements TableContent {
         return content;
     }
 
-    protected abstract Object[] getRow(MarketAPI market);
+    protected Object[] getHeader(float width, String availableOrDemand, String excessOrDeficit) {
+        Object header[] = { "Price", .10f * width, availableOrDemand, .1f * width, excessOrDeficit, .1f * width,
+                "Location", .35f * width, "Star system", .2f * width, "Dist (ly)", .1f * width };
+        return header;
+    }
+
+    protected Object[] getRow(MarketAPI market) {
+        return new Object[18];
+    }
 
     protected Color getClaimingFactionColor(MarketAPI market) {
         FactionAPI faction = Misc.getClaimingFaction(market.getPrimaryEntity());

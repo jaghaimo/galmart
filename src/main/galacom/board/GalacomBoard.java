@@ -47,7 +47,7 @@ public class GalacomBoard extends BaseIntelPlugin {
 
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
-        info.addTitle("Commodity Market", getTitleColor(mode));
+        info.addPara("Commodity Market", getTitleColor(mode), 0);
     }
 
     @Override
