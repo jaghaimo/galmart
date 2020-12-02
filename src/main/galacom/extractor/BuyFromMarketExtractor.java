@@ -6,6 +6,7 @@ import java.util.List;
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.impl.campaign.submarkets.OpenMarketPlugin;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.util.Misc;
 
@@ -51,7 +52,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
         // Available
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
-        row[5] = "?";
+        row[5] = getAvailable(commodity);
         // Excess
         row[6] = Alignment.MID;
         row[7] = getExcessColor(excess);
@@ -72,6 +73,12 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
         return row;
     }
 
+    private String getAvailable(CommodityOnMarketAPI commodity) {
+        int available = OpenMarketPlugin.getApproximateStockpileLimit(commodity);
+        available += commodity.getPlayerTradeNetQuantity();
+        return Misc.getWithDGS(available);
+    }
+
     private Color getExcessColor(int excess) {
         if (excess > 0) {
             return Misc.getPositiveHighlightColor();
@@ -81,7 +88,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
 
     private String getExcessValue(int excess) {
         if (excess > 0) {
-            return String.valueOf(excess);
+            return Misc.getWithDGS(excess);
         }
         return "---";
     }

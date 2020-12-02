@@ -53,7 +53,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         // Demand
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
-        row[5] = "?";
+        row[5] = getDemand(market, commodity);
         // Deficit
         row[6] = Alignment.MID;
         row[7] = getDeficitColor(deficit);
@@ -74,6 +74,17 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         return row;
     }
 
+    private String getDemand(MarketAPI market, CommodityOnMarketAPI commodity) {
+        int demandIcons = commodity.getMaxDemand();
+        if (!commodity.getCommodity().isPrimary()) {
+            CommodityOnMarketAPI primary = market.getCommodityData(commodity.getCommodity().getDemandClass());
+            demandIcons = primary.getMaxDemand();
+        }
+        int demand = (int) (commodity.getCommodity().getEconUnit() * demandIcons);
+        demand -= commodity.getPlayerTradeNetQuantity();
+        return Misc.getWithDGS(demand);
+    }
+
     private Color getDeficitColor(int deficit) {
         if (deficit > 0) {
             return Misc.getNegativeHighlightColor();
@@ -83,7 +94,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
 
     private String getDeficitValue(int deficit) {
         if (deficit > 0) {
-            return String.valueOf(deficit);
+            return Misc.getWithDGS(deficit);
         }
         return "---";
     }
