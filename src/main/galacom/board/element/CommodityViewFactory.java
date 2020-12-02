@@ -6,7 +6,8 @@ import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 
 import galacom.extractor.BuyFromMarketExtractor;
 import galacom.extractor.SellOnMarketExtractor;
-import galacom.ui.Header;
+import galacom.ui.Padding;
+import galacom.ui.Paragraph;
 import galacom.ui.Renderable;
 import galacom.ui.Stack;
 import galacom.ui.Table;
@@ -26,10 +27,10 @@ public class CommodityViewFactory {
         float tableHeight = (height / 2) - labelHeight;
         TableContent buyTableContent = new BuyFromMarketExtractor(commodityId, economy);
         TableContent sellTableContent = new SellOnMarketExtractor(commodityId, economy);
-        return new Stack(new Header("Buy Price for 100 " + commodityName, width),
-                new Table(commodityId, width, tableHeight, buyTableContent),
-                new Header("Sell Price for 100 " + commodityName, width),
-                new Table(commodityId, width, tableHeight, sellTableContent));
+        return new Stack(new Paragraph("Best places to sell " + commodityName + ":", width), new Padding(5f),
+                new Table(commodityId, width, tableHeight, sellTableContent), new Padding(5),
+                new Paragraph("Best places to buy " + commodityName + ":", width), new Padding(5),
+                new Table(commodityId, width, tableHeight, buyTableContent));
     }
 
     private String getCommodityName(String commodityId) {

@@ -1,15 +1,14 @@
 package galacom.ui;
 
-import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
-public class Header extends Renderable {
+public class Paragraph extends Renderable {
 
-    private String title;
+    private String text;
     private float width;
 
-    public Header(String title, float width) {
-        this.title = title;
+    public Paragraph(String title, float width) {
+        this.text = title;
         this.width = width;
     }
 
@@ -20,6 +19,6 @@ public class Header extends Renderable {
 
     @Override
     public void render(TooltipMakerAPI tooltip) {
-        tooltip.addSectionHeading(title, Alignment.MID, 0f);
+        tooltip.addPara(text, 0f);
     }
 }

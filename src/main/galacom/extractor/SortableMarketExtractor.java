@@ -19,8 +19,10 @@ public abstract class SortableMarketExtractor extends MarketExtractor {
             public int compare(MarketAPI marketA, MarketAPI marketB) {
                 float priceA = getPrice(marketA);
                 float priceB = getPrice(marketB);
-                return Math.round(priceA - priceB);
+                return (int) Math.signum(priceA - priceB);
             }
         });
     }
+
+    protected abstract float getPrice(MarketAPI market);
 }

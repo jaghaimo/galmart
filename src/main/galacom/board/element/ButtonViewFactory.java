@@ -22,7 +22,6 @@ public class ButtonViewFactory {
     }
 
     public Stack get(String activeId) {
-        Global.getSector().getCampaignUI().addMessage(activeId);
         List<Renderable> buttons = new LinkedList<>();
         List<String> commodityIds = economy.getAllCommodityIds();
         sortCommodities(commodityIds);
