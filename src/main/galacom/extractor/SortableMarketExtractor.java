@@ -3,13 +3,17 @@ package galacom.extractor;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 public abstract class SortableMarketExtractor extends MarketExtractor {
 
+    protected CommoditySpecAPI commoditySpec;
+
     protected SortableMarketExtractor(String commodityId, EconomyAPI economy) {
         super(commodityId, economy);
+        commoditySpec = economy.getCommoditySpec(commodityId);
     }
 
     protected void sortMarkets() {

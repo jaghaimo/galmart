@@ -27,6 +27,9 @@ public abstract class MarketExtractor implements TableContent {
         List<Object[]> content = new ArrayList<>();
         for (MarketAPI market : markets) {
             Object[] row = getRow(market);
+            if (row == null) {
+                continue;
+            }
             content.add(row);
         }
         return content;
@@ -40,6 +43,15 @@ public abstract class MarketExtractor implements TableContent {
             return Misc.getGrayColor();
         }
         return faction.getColor();
+    }
+
+    protected String getDistance(MarketAPI market) {
+        float distance = Misc.getDistanceToPlayerLY(market.getPrimaryEntity());
+        return String.format("%.1f", distance);
+    }
+
+    protected String getLocation(MarketAPI market) {
+        return market.getName() + " - " + market.getFaction().getDisplayName();
     }
 
     protected String getSystemName(MarketAPI market) {

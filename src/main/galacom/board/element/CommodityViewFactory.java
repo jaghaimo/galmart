@@ -23,8 +23,9 @@ public class CommodityViewFactory {
 
     public Renderable get(String commodityId, float width, float height) {
         String commodityName = getCommodityName(commodityId);
+        float paddingHeight = 5f;
         float labelHeight = 25f;
-        float tableHeight = (height / 2) - labelHeight;
+        float tableHeight = (height / 2) - labelHeight - paddingHeight;
         TableContent buyTableContent = new BuyFromMarketExtractor(commodityId, economy);
         TableContent sellTableContent = new SellOnMarketExtractor(commodityId, economy);
         return new Stack(new Paragraph("Best places to sell " + commodityName + ":", width), new Padding(5f),

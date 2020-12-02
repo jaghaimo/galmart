@@ -24,7 +24,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
                 "Deficit", .1f * width, //
                 "Location", .35f * width, //
                 "Star system", .2f * width, //
-                "Distance", .1f * width //
+                "Dist (ly)", .1f * width //
         };
         return header;
     }
@@ -38,13 +38,22 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
 
     @Override
     protected float getPrice(MarketAPI market) {
-        return market.getDemandPrice(commodityId, 100, true) / 100;
+        float econUnit = commoditySpec.getEconUnit();
+        return market.getDemandPrice(commodityId, econUnit, true) / econUnit;
     }
 
     @Override
     protected Object[] getRow(MarketAPI market) {
-        Object[] row = new Object[18];
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
+        int demand = getDemand(market, commodity);
+        if (demand <= 0) {
+            return null;
+        }
+        return getRow(market, commodity, demand);
+    }
+
+    private Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, int demand) {
+        Object[] row = new Object[18];
         int deficit = commodity.getDeficitQuantity();
         // Price
         row[0] = Alignment.MID;
@@ -53,7 +62,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         // Demand
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
-        row[5] = getDemand(market, commodity);
+        row[5] = Misc.getWithDGS(demand);
         // Deficit
         row[6] = Alignment.MID;
         row[7] = getDeficitColor(deficit);
@@ -61,7 +70,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         // Location
         row[9] = Alignment.LMID;
         row[10] = market.getTextColorForFactionOrPlanet();
-        row[11] = market.getName() + " - " + market.getFaction().getDisplayName();
+        row[11] = getLocation(market);
         // Star system
         row[12] = Alignment.MID;
         row[13] = getClaimingFactionColor(market);
@@ -69,12 +78,12 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         // Distance
         row[15] = Alignment.MID;
         row[16] = Misc.getHighlightColor();
-        row[17] = "?";
+        row[17] = getDistance(market);
 
         return row;
     }
 
-    private String getDemand(MarketAPI market, CommodityOnMarketAPI commodity) {
+    private int getDemand(MarketAPI market, CommodityOnMarketAPI commodity) {
         int demandIcons = commodity.getMaxDemand();
         if (!commodity.getCommodity().isPrimary()) {
             CommodityOnMarketAPI primary = market.getCommodityData(commodity.getCommodity().getDemandClass());
@@ -82,7 +91,7 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         }
         int demand = (int) (commodity.getCommodity().getEconUnit() * demandIcons);
         demand -= commodity.getPlayerTradeNetQuantity();
-        return Misc.getWithDGS(demand);
+        return demand;
     }
 
     private Color getDeficitColor(int deficit) {

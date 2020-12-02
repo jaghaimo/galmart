@@ -24,7 +24,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
                 "Excess", .1f * width, //
                 "Location", .35f * width, //
                 "Star system", .2f * width, //
-                "Distance", .1f * width //
+                "Dist (ly)", .1f * width //
         };
         return header;
     }
@@ -37,13 +37,22 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
 
     @Override
     protected float getPrice(MarketAPI market) {
-        return market.getSupplyPrice(commodityId, 100, true) / 100;
+        float econUnit = commoditySpec.getEconUnit();
+        return market.getSupplyPrice(commodityId, econUnit, true) / econUnit;
     }
 
     @Override
     protected Object[] getRow(MarketAPI market) {
-        Object[] row = new Object[18];
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
+        int available = getAvailable(commodity);
+        if (available <= 0) {
+            return null;
+        }
+        return getRow(market, commodity, available);
+    }
+
+    private Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, int available) {
+        Object[] row = new Object[18];
         int excess = commodity.getExcessQuantity();
         // Price
         row[0] = Alignment.MID;
@@ -52,7 +61,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
         // Available
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
-        row[5] = getAvailable(commodity);
+        row[5] = Misc.getWithDGS(available);
         // Excess
         row[6] = Alignment.MID;
         row[7] = getExcessColor(excess);
@@ -60,7 +69,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
         // Location
         row[9] = Alignment.LMID;
         row[10] = market.getTextColorForFactionOrPlanet();
-        row[11] = market.getName() + " - " + market.getFaction().getDisplayName();
+        row[11] = getLocation(market);
         // Star system
         row[12] = Alignment.MID;
         row[13] = getClaimingFactionColor(market);
@@ -68,15 +77,15 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
         // Distance
         row[15] = Alignment.MID;
         row[16] = Misc.getHighlightColor();
-        row[17] = "?";
+        row[17] = getDistance(market);
 
         return row;
     }
 
-    private String getAvailable(CommodityOnMarketAPI commodity) {
+    private int getAvailable(CommodityOnMarketAPI commodity) {
         int available = OpenMarketPlugin.getApproximateStockpileLimit(commodity);
         available += commodity.getPlayerTradeNetQuantity();
-        return Misc.getWithDGS(available);
+        return available;
     }
 
     private Color getExcessColor(int excess) {
