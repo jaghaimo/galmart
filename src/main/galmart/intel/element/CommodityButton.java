@@ -22,6 +22,7 @@ public class CommodityButton extends ToggleButton {
             public void callback() {
                 GalmartBoard board = GalmartBoard.getInstance();
                 board.setActive(commodityId);
+                board.issueIntel(commodityId);
             }
         });
     }

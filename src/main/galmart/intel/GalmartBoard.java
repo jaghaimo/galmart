@@ -1,5 +1,6 @@
 package galmart.intel;
 
+import java.util.List;
 import java.util.Set;
 
 import com.fs.starfarer.api.Global;
@@ -22,12 +23,15 @@ public class GalmartBoard extends BaseIntelPlugin {
     private String activeId;
     private ButtonViewFactory buttonViewFactory;
     private CommodityViewFactory commodityViewFactory;
+    private IntelManager intelManager;
+    private IntelFactory intelFactory;
 
     public static GalmartBoard getInstance() {
-        IntelInfoPlugin intel = Global.getSector().getIntelManager().getFirstIntel(GalmartBoard.class);
+        IntelManager intelManager = new IntelManager();
+        IntelInfoPlugin intel = intelManager.get(GalmartIntel.class);
         if (intel == null) {
-            GalmartBoard board = new GalmartBoard();
-            Global.getSector().getIntelManager().addIntel(board);
+            intel = new GalmartBoard();
+            intelManager.add(intel);
         }
         return (GalmartBoard) intel;
     }
@@ -36,6 +40,7 @@ public class GalmartBoard extends BaseIntelPlugin {
         activeId = Commodities.SUPPLIES;
         buttonViewFactory = new ButtonViewFactory();
         commodityViewFactory = new CommodityViewFactory();
+        intelManager = new IntelManager();
     }
 
     @Override
@@ -59,6 +64,11 @@ public class GalmartBoard extends BaseIntelPlugin {
     }
 
     @Override
+    public String getIcon() {
+        return Global.getSettings().getSpriteName("galmart", "board");
+    }
+
+    @Override
     public Set<String> getIntelTags(SectorMapAPI map) {
         Set<String> tags = super.getIntelTags(map);
         tags.add("Commodities");
@@ -75,9 +85,12 @@ public class GalmartBoard extends BaseIntelPlugin {
         return false;
     }
 
-    @Override
-    public String getIcon() {
-        return Global.getSettings().getSpriteName("galmart", "board");
+    public void issueIntel(String commodityId) {
+        intelManager.remove(GalmartIntel.class);
+        List<GalmartIntel> intels = intelFactory.get(commodityId);
+        for (GalmartIntel intel : intels) {
+            intelManager.add(intel);
+        }
     }
 
     public void setActive(String commodityId) {
@@ -93,6 +106,9 @@ public class GalmartBoard extends BaseIntelPlugin {
         }
         if (commodityViewFactory == null) {
             commodityViewFactory = new CommodityViewFactory();
+        }
+        if (intelManager == null) {
+            intelManager = new IntelManager();
         }
         return this;
     }

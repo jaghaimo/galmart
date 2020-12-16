@@ -21,12 +21,17 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
     @Override
     public List<Object[]> getRows() {
         sortMarkets();
-        Collections.reverse(markets);
         return super.getRows();
     }
 
     @Override
-    protected float getPrice(MarketAPI market) {
+    public List<MarketAPI> getMarkets() {
+        sortMarkets();
+        return markets;
+    }
+
+    @Override
+    public float getPrice(MarketAPI market) {
         float econUnit = commoditySpec.getEconUnit();
         return market.getDemandPrice(commodityId, econUnit, true) / econUnit;
     }
@@ -40,6 +45,12 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
         }
         int deficit = -commodity.getDeficitQuantity();
         return getRow(market, commodity, demand, deficit);
+    }
+
+    @Override
+    protected void sortMarkets() {
+        super.sortMarkets();
+        Collections.reverse(markets);
     }
 
     private int getDemand(MarketAPI market, CommodityOnMarketAPI commodity) {

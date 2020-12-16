@@ -25,7 +25,7 @@ public class BuyFromMarketExtractor extends SortableMarketExtractor {
     }
 
     @Override
-    protected float getPrice(MarketAPI market) {
+    public float getPrice(MarketAPI market) {
         float econUnit = commoditySpec.getEconUnit();
         return market.getSupplyPrice(commodityId, econUnit, true) / econUnit;
     }

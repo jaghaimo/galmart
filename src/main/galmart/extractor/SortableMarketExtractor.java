@@ -3,6 +3,7 @@ package galmart.extractor;
 import java.awt.Color;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
@@ -18,6 +19,12 @@ public abstract class SortableMarketExtractor extends MarketExtractor {
     protected SortableMarketExtractor(String commodityId, EconomyAPI economy) {
         super(commodityId, economy);
         commoditySpec = economy.getCommoditySpec(commodityId);
+    }
+
+    @Override
+    public List<MarketAPI> getMarkets() {
+        sortMarkets();
+        return markets;
     }
 
     protected Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, int available, int excess) {
@@ -62,7 +69,7 @@ public abstract class SortableMarketExtractor extends MarketExtractor {
         });
     }
 
-    protected abstract float getPrice(MarketAPI market);
+    public abstract float getPrice(MarketAPI market);
 
     private Color getExcessColor(int excess) {
         if (excess > 0) {

@@ -40,6 +40,27 @@ public abstract class MarketExtractor implements TableContent {
         return content;
     }
 
+    public String getDistance(MarketAPI market) {
+        float distance = Misc.getDistanceToPlayerLY(market.getPrimaryEntity());
+        return String.format("%.1f", distance);
+    }
+
+    public String getLocation(MarketAPI market) {
+        return market.getName() + " - " + market.getFaction().getDisplayName();
+    }
+
+    public List<MarketAPI> getMarkets() {
+        return markets;
+    }
+
+    public String getSystemName(MarketAPI market) {
+        StarSystemAPI starSystem = market.getStarSystem();
+        if (starSystem == null) {
+            return "Hyperspace";
+        }
+        return starSystem.getBaseName();
+    }
+
     protected Object[] getHeader(float width, String availableOrDemand, String excessOrDeficit) {
         Object header[] = { "Price", .10f * width, availableOrDemand, .1f * width, excessOrDeficit, .1f * width,
                 "Location", .35f * width, "Star system", .2f * width, "Dist (ly)", .1f * width };
@@ -56,22 +77,5 @@ public abstract class MarketExtractor implements TableContent {
             return Misc.getGrayColor();
         }
         return faction.getColor();
-    }
-
-    protected String getDistance(MarketAPI market) {
-        float distance = Misc.getDistanceToPlayerLY(market.getPrimaryEntity());
-        return String.format("%.1f", distance);
-    }
-
-    protected String getLocation(MarketAPI market) {
-        return market.getName() + " - " + market.getFaction().getDisplayName();
-    }
-
-    protected String getSystemName(MarketAPI market) {
-        StarSystemAPI starSystem = market.getStarSystem();
-        if (starSystem == null) {
-            return "Hyperspace";
-        }
-        return starSystem.getBaseName();
     }
 }
