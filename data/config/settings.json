@@ -1,6 +1,7 @@
 {
+    "numberOfIntelToShow": 3,
     "graphics": {
-        "galacom": {
+        "galmart": {
             "board": "graphics/icons/intel/tutorial_mission.png"
         }
     }

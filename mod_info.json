@@ -1,13 +1,13 @@
 {
-    "id": "galacom",
-    "name": "Galactic Commodities",
+    "id": "galmart",
+    "name": "Galactic Markets",
     "author": "Jaghaimo",
     "utility": true,
     "version": "1.0.0",
     "description": "Economy services for Starsector",
     "gameVersion": "0.9.1a",
-    "modPlugin": "galacom.GalacomMod",
+    "modPlugin": "galmart.GalmartMod",
     "jars": [
-        "galacom.jar"
+        "galmart.jar"
     ]
 }

@@ -1,4 +1,4 @@
-package galacom.ui;
+package galmart.ui;
 
 import com.fs.starfarer.api.ui.CustomPanelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
