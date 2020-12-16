@@ -1,17 +1,17 @@
-package galacom.board.element;
+package galmart.intel.element;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 
-import galacom.extractor.BuyFromMarketExtractor;
-import galacom.extractor.SellOnMarketExtractor;
-import galacom.ui.Padding;
-import galacom.ui.Paragraph;
-import galacom.ui.Renderable;
-import galacom.ui.Stack;
-import galacom.ui.Table;
-import galacom.ui.TableContent;
+import galmart.extractor.BuyFromMarketExtractor;
+import galmart.extractor.SellOnMarketExtractor;
+import galmart.ui.Padding;
+import galmart.ui.Paragraph;
+import galmart.ui.Renderable;
+import galmart.ui.Stack;
+import galmart.ui.Table;
+import galmart.ui.TableContent;
 
 public class CommodityViewFactory {
 

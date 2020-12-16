@@ -1,12 +1,12 @@
-package galacom.board.element;
+package galmart.intel.element;
 
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.util.Misc;
 
-import galacom.board.GalacomBoard;
-import galacom.ui.Callable;
-import galacom.ui.Size;
-import galacom.ui.ToggleButton;
+import galmart.intel.GalmartBoard;
+import galmart.ui.Callable;
+import galmart.ui.Size;
+import galmart.ui.ToggleButton;
 
 public class CommodityButton extends ToggleButton {
 
@@ -20,7 +20,7 @@ public class CommodityButton extends ToggleButton {
 
             @Override
             public void callback() {
-                GalacomBoard board = GalacomBoard.getInstance();
+                GalmartBoard board = GalmartBoard.getInstance();
                 board.setActive(commodityId);
             }
         });

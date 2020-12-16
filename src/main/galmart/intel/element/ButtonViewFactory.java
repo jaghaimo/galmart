@@ -1,4 +1,4 @@
-package galacom.board.element;
+package galmart.intel.element;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,9 +9,9 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 
-import galacom.ui.Button;
-import galacom.ui.Renderable;
-import galacom.ui.Stack;
+import galmart.ui.Button;
+import galmart.ui.Renderable;
+import galmart.ui.Stack;
 
 public class ButtonViewFactory {
 

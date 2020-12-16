@@ -1,4 +1,4 @@
-package galacom.extractor;
+package galmart.extractor;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.util.Misc;
 
-import galacom.ui.TableContent;
+import galmart.ui.TableContent;
 
 public abstract class MarketExtractor implements TableContent {
 

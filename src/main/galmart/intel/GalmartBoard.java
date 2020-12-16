@@ -1,4 +1,4 @@
-package galacom.board;
+package galmart.intel;
 
 import java.util.Set;
 
@@ -11,28 +11,28 @@ import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
-import galacom.board.element.ButtonViewFactory;
-import galacom.board.element.CommodityViewFactory;
-import galacom.ui.Callable;
-import galacom.ui.GridRenderer;
-import galacom.ui.Size;
+import galmart.intel.element.ButtonViewFactory;
+import galmart.intel.element.CommodityViewFactory;
+import galmart.ui.Callable;
+import galmart.ui.GridRenderer;
+import galmart.ui.Size;
 
-public class GalacomBoard extends BaseIntelPlugin {
+public class GalmartBoard extends BaseIntelPlugin {
 
     private String activeId;
     private ButtonViewFactory buttonViewFactory;
     private CommodityViewFactory commodityViewFactory;
 
-    public static GalacomBoard getInstance() {
-        IntelInfoPlugin intel = Global.getSector().getIntelManager().getFirstIntel(GalacomBoard.class);
+    public static GalmartBoard getInstance() {
+        IntelInfoPlugin intel = Global.getSector().getIntelManager().getFirstIntel(GalmartBoard.class);
         if (intel == null) {
-            GalacomBoard board = new GalacomBoard();
+            GalmartBoard board = new GalmartBoard();
             Global.getSector().getIntelManager().addIntel(board);
         }
-        return (GalacomBoard) intel;
+        return (GalmartBoard) intel;
     }
 
-    public GalacomBoard() {
+    public GalmartBoard() {
         activeId = Commodities.SUPPLIES;
         buttonViewFactory = new ButtonViewFactory();
         commodityViewFactory = new CommodityViewFactory();
@@ -77,7 +77,7 @@ public class GalacomBoard extends BaseIntelPlugin {
 
     @Override
     public String getIcon() {
-        return Global.getSettings().getSpriteName("galacom", "board");
+        return Global.getSettings().getSpriteName("galmart", "board");
     }
 
     public void setActive(String commodityId) {

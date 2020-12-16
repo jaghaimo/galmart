@@ -1,4 +1,4 @@
-package galacom.ui;
+package galmart.ui;
 
 public class Size {
 

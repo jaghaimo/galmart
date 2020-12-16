@@ -1,4 +1,4 @@
-package galacom.extractor;
+package galmart.extractor;
 
 import java.util.Collections;
 import java.util.List;

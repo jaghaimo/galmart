@@ -1,0 +1,12 @@
+{
+    "masterVersionFile":"https://raw.githubusercontent.com/jaghaimo/galmart/master/galmart.version",
+    "modName":"Galactic Markets",
+    "modThreadId":19380,
+    "modVersion":
+    {
+        "major":1,
+        "minor":0,
+        "patch":0
+    }
+}
+
