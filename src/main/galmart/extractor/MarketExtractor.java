@@ -1,13 +1,15 @@
 package galmart.extractor;
 
-import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import com.fs.starfarer.api.campaign.FactionAPI;
-import com.fs.starfarer.api.campaign.StarSystemAPI;
+import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
+import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.util.Misc;
 
 import galmart.ui.TableContent;
@@ -15,10 +17,13 @@ import galmart.ui.TableContent;
 public abstract class MarketExtractor implements TableContent {
 
     protected String commodityId;
+    protected ExtractorHelper helper;
     protected List<MarketAPI> markets;
 
     protected MarketExtractor(String commodityId, EconomyAPI economy) {
         this.commodityId = commodityId;
+        CommoditySpecAPI commoditySpec = economy.getCommoditySpec(commodityId);
+        this.helper = new ExtractorHelper(commodityId, commoditySpec);
         this.markets = economy.getMarketsCopy();
     }
 
@@ -30,35 +35,11 @@ public abstract class MarketExtractor implements TableContent {
     @Override
     public List<Object[]> getRows() {
         List<Object[]> content = new ArrayList<>();
-        for (MarketAPI market : markets) {
+        for (MarketAPI market : getMarkets()) {
             Object[] row = getRow(market);
-            if (row == null) {
-                continue;
-            }
             content.add(row);
         }
         return content;
-    }
-
-    public String getDistance(MarketAPI market) {
-        float distance = Misc.getDistanceToPlayerLY(market.getPrimaryEntity());
-        return String.format("%.1f", distance);
-    }
-
-    public String getLocation(MarketAPI market) {
-        return market.getName() + " - " + market.getFaction().getDisplayName();
-    }
-
-    public List<MarketAPI> getMarkets() {
-        return markets;
-    }
-
-    public String getSystemName(MarketAPI market) {
-        StarSystemAPI starSystem = market.getStarSystem();
-        if (starSystem == null) {
-            return "Hyperspace";
-        }
-        return starSystem.getBaseName();
     }
 
     protected Object[] getHeader(float width, String availableOrDemand, String excessOrDeficit) {
@@ -67,15 +48,51 @@ public abstract class MarketExtractor implements TableContent {
         return header;
     }
 
-    protected Object[] getRow(MarketAPI market) {
-        return new Object[18];
+    protected Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, int available, int excess) {
+        Object[] row = new Object[18];
+        // Price
+        row[0] = Alignment.MID;
+        row[1] = Misc.getHighlightColor();
+        row[2] = Misc.getDGSCredits(getPrice(market));
+        // Available or Demand
+        row[3] = Alignment.MID;
+        row[4] = Misc.getHighlightColor();
+        row[5] = Misc.getWithDGS(available);
+        // Excess or Deficit
+        row[6] = Alignment.MID;
+        row[7] = helper.getExcessColor(excess);
+        row[8] = helper.getExcessValue(excess);
+        // Location
+        row[9] = Alignment.LMID;
+        row[10] = market.getTextColorForFactionOrPlanet();
+        row[11] = helper.getLocation(market);
+        // Star system
+        row[12] = Alignment.MID;
+        row[13] = helper.getClaimingFactionColor(market);
+        row[14] = helper.getSystemName(market);
+        // Distance
+        row[15] = Alignment.MID;
+        row[16] = Misc.getHighlightColor();
+        row[17] = helper.getDistance(market);
+
+        return row;
     }
 
-    protected Color getClaimingFactionColor(MarketAPI market) {
-        FactionAPI faction = Misc.getClaimingFaction(market.getPrimaryEntity());
-        if (faction == null) {
-            return Misc.getGrayColor();
-        }
-        return faction.getColor();
+    protected void sortMarkets() {
+        Collections.sort(markets, new Comparator<MarketAPI>() {
+
+            @Override
+            public int compare(MarketAPI marketA, MarketAPI marketB) {
+                float priceA = getPrice(marketA);
+                float priceB = getPrice(marketB);
+                return (int) Math.signum(priceA - priceB);
+            }
+        });
     }
+
+    public abstract List<MarketAPI> getMarkets();
+
+    public abstract float getPrice(MarketAPI market);
+
+    protected abstract Object[] getRow(MarketAPI market);
 }

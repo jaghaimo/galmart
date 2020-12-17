@@ -7,7 +7,7 @@ import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
-public class SellOnMarketExtractor extends SortableMarketExtractor {
+public class SellOnMarketExtractor extends MarketExtractor {
 
     public SellOnMarketExtractor(String commodityId, EconomyAPI economy) {
         super(commodityId, economy);
@@ -32,14 +32,14 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
 
     @Override
     public float getPrice(MarketAPI market) {
-        float econUnit = commoditySpec.getEconUnit();
-        return market.getDemandPrice(commodityId, econUnit, true) / econUnit;
+        return helper.getDemandPrice(market);
     }
 
     @Override
     protected Object[] getRow(MarketAPI market) {
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
-        int demand = getDemand(market, commodity);
+        int demand = helper.getDemand(market, commodity);
+        // TODO replace with filter
         if (demand <= 0) {
             return null;
         }
@@ -51,16 +51,5 @@ public class SellOnMarketExtractor extends SortableMarketExtractor {
     protected void sortMarkets() {
         super.sortMarkets();
         Collections.reverse(markets);
-    }
-
-    private int getDemand(MarketAPI market, CommodityOnMarketAPI commodity) {
-        int demandIcons = commodity.getMaxDemand();
-        if (!commodity.getCommodity().isPrimary()) {
-            CommodityOnMarketAPI primary = market.getCommodityData(commodity.getCommodity().getDemandClass());
-            demandIcons = primary.getMaxDemand();
-        }
-        int demand = (int) (commodity.getCommodity().getEconUnit() * demandIcons);
-        demand -= commodity.getPlayerTradeNetQuantity();
-        return demand;
     }
 }

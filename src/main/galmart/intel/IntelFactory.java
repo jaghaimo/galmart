@@ -8,8 +8,8 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 import galmart.GalmartMod;
 import galmart.extractor.BuyFromMarketExtractor;
+import galmart.extractor.MarketExtractor;
 import galmart.extractor.SellOnMarketExtractor;
-import galmart.extractor.SortableMarketExtractor;
 
 public class IntelFactory {
 
@@ -26,12 +26,12 @@ public class IntelFactory {
         return intels;
     }
 
-    private List<MarketAPI> getMarkets(SortableMarketExtractor extractor) {
+    private List<MarketAPI> getMarkets(MarketExtractor extractor) {
         List<MarketAPI> markets = extractor.getMarkets();
         return markets.subList(0, GalmartMod.numberOfIntelToShow);
     }
 
-    private List<GalmartIntel> getIntels(String action, String commodityId, SortableMarketExtractor extractor) {
+    private List<GalmartIntel> getIntels(String action, String commodityId, MarketExtractor extractor) {
         List<GalmartIntel> intels = new LinkedList<>();
         for (MarketAPI market : getMarkets(extractor)) {
             GalmartIntel intel = new GalmartIntel(action, commodityId, extractor, market);
