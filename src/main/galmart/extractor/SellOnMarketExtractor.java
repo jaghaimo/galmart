@@ -1,6 +1,5 @@
 package galmart.extractor;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
@@ -9,8 +8,8 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 public class SellOnMarketExtractor extends MarketExtractor {
 
-    public SellOnMarketExtractor(String commodityId, EconomyAPI economy) {
-        super(commodityId, economy);
+    public SellOnMarketExtractor(String commodityId, List<MarketAPI> markets, EconomyAPI economy) {
+        super(commodityId, markets, new DemandPrice(commodityId, economy));
     }
 
     @Override
@@ -19,37 +18,11 @@ public class SellOnMarketExtractor extends MarketExtractor {
     }
 
     @Override
-    public List<Object[]> getRows() {
-        sortMarkets();
-        return super.getRows();
-    }
-
-    @Override
-    public List<MarketAPI> getMarkets() {
-        sortMarkets();
-        return markets;
-    }
-
-    @Override
-    public float getPrice(MarketAPI market) {
-        return helper.getDemandPrice(market);
-    }
-
-    @Override
     protected Object[] getRow(MarketAPI market) {
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
+        float price = getPrice(market);
         int demand = helper.getDemand(market, commodity);
-        // TODO replace with filter
-        if (demand <= 0) {
-            return null;
-        }
         int deficit = -commodity.getDeficitQuantity();
-        return getRow(market, commodity, demand, deficit);
-    }
-
-    @Override
-    protected void sortMarkets() {
-        super.sortMarkets();
-        Collections.reverse(markets);
+        return getRow(market, commodity, price, demand, deficit);
     }
 }

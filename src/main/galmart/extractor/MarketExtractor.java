@@ -1,13 +1,9 @@
 package galmart.extractor;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
-import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
-import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.util.Misc;
@@ -17,14 +13,15 @@ import galmart.ui.TableContent;
 public abstract class MarketExtractor implements TableContent {
 
     protected String commodityId;
-    protected ExtractorHelper helper;
-    protected List<MarketAPI> markets;
+    protected TableCellHelper helper;
+    private List<MarketAPI> markets;
+    private Price price;
 
-    protected MarketExtractor(String commodityId, EconomyAPI economy) {
+    protected MarketExtractor(String commodityId, List<MarketAPI> markets, Price price) {
         this.commodityId = commodityId;
-        CommoditySpecAPI commoditySpec = economy.getCommoditySpec(commodityId);
-        this.helper = new ExtractorHelper(commodityId, commoditySpec);
-        this.markets = economy.getMarketsCopy();
+        this.helper = new TableCellHelper();
+        this.markets = markets;
+        this.price = price;
     }
 
     @Override
@@ -35,7 +32,7 @@ public abstract class MarketExtractor implements TableContent {
     @Override
     public List<Object[]> getRows() {
         List<Object[]> content = new ArrayList<>();
-        for (MarketAPI market : getMarkets()) {
+        for (MarketAPI market : markets) {
             Object[] row = getRow(market);
             content.add(row);
         }
@@ -48,12 +45,13 @@ public abstract class MarketExtractor implements TableContent {
         return header;
     }
 
-    protected Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, int available, int excess) {
+    protected Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, float price, int available,
+            int excess) {
         Object[] row = new Object[18];
         // Price
         row[0] = Alignment.MID;
         row[1] = Misc.getHighlightColor();
-        row[2] = Misc.getDGSCredits(getPrice(market));
+        row[2] = Misc.getDGSCredits(price);
         // Available or Demand
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
@@ -78,21 +76,9 @@ public abstract class MarketExtractor implements TableContent {
         return row;
     }
 
-    protected void sortMarkets() {
-        Collections.sort(markets, new Comparator<MarketAPI>() {
-
-            @Override
-            public int compare(MarketAPI marketA, MarketAPI marketB) {
-                float priceA = getPrice(marketA);
-                float priceB = getPrice(marketB);
-                return (int) Math.signum(priceA - priceB);
-            }
-        });
+    protected float getPrice(MarketAPI market) {
+        return price.getPrice(market);
     }
-
-    public abstract List<MarketAPI> getMarkets();
-
-    public abstract float getPrice(MarketAPI market);
 
     protected abstract Object[] getRow(MarketAPI market);
 }

@@ -5,20 +5,11 @@ import java.awt.Color;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
-import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.submarkets.OpenMarketPlugin;
 import com.fs.starfarer.api.util.Misc;
 
-public class ExtractorHelper {
-
-    private String commodityId;
-    private CommoditySpecAPI commoditySpec;
-
-    public ExtractorHelper(String commodityId, CommoditySpecAPI commoditySpec) {
-        this.commodityId = commodityId;
-        this.commoditySpec = commoditySpec;
-    }
+public class TableCellHelper {
 
     public int getAvailable(CommodityOnMarketAPI commodity) {
         int available = OpenMarketPlugin.getApproximateStockpileLimit(commodity);
@@ -43,11 +34,6 @@ public class ExtractorHelper {
         int demand = (int) (commodity.getCommodity().getEconUnit() * demandIcons);
         demand -= commodity.getPlayerTradeNetQuantity();
         return demand;
-    }
-
-    public float getDemandPrice(MarketAPI market) {
-        float econUnit = commoditySpec.getEconUnit();
-        return market.getDemandPrice(commodityId, econUnit, true) / econUnit;
     }
 
     public Color getExcessColor(int excess) {
@@ -77,11 +63,6 @@ public class ExtractorHelper {
 
     public String getLocation(MarketAPI market) {
         return market.getName() + " - " + market.getFaction().getDisplayName();
-    }
-
-    public float getSupplyPrice(MarketAPI market) {
-        float econUnit = commoditySpec.getEconUnit();
-        return market.getSupplyPrice(commodityId, econUnit, true) / econUnit;
     }
 
     public String getSystemName(MarketAPI market) {

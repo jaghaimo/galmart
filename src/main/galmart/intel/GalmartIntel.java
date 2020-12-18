@@ -10,22 +10,16 @@ import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
-import galmart.extractor.MarketExtractor;
-
 public class GalmartIntel extends BaseIntelPlugin {
 
     private String action;
     private CommoditySpecAPI commodity;
-    private MarketExtractor extractor;
     private MarketAPI market;
-    private float price;
 
-    public GalmartIntel(String action, String commodityId, MarketExtractor extractor, MarketAPI market) {
+    public GalmartIntel(String action, String commodityId, MarketAPI market) {
         this.action = action;
         this.commodity = Global.getSector().getEconomy().getCommoditySpec(commodityId);
-        this.extractor = extractor;
         this.market = market;
-        this.price = extractor.getPrice(market);
     }
 
     @Override
