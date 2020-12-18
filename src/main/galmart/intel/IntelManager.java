@@ -6,7 +6,7 @@ import com.fs.starfarer.api.campaign.comm.IntelManagerAPI;
 
 public class IntelManager {
 
-    IntelManagerAPI intelManager;
+    private IntelManagerAPI intelManager;
 
     public IntelManager() {
         this.intelManager = Global.getSector().getIntelManager();
