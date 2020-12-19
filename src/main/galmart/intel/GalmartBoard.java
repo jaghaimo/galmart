@@ -21,7 +21,13 @@ import galmart.ui.Size;
 public class GalmartBoard extends BaseIntelPlugin {
 
     public enum CommodityTab {
-        BUY, SELL;
+        BUY("Buy"), SELL("Sell");
+
+        public String title;
+
+        private CommodityTab(String title) {
+            this.title = title;
+        }
     }
 
     private String activeId;

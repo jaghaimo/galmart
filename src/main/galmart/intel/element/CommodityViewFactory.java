@@ -1,9 +1,11 @@
 package galmart.intel.element;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
+
+import org.lwjgl.input.Keyboard;
 
 import galmart.extractor.BuyFromMarketExtractor;
 import galmart.extractor.BuyFromMarketFactory;
@@ -34,8 +36,9 @@ public class CommodityViewFactory {
     }
 
     private Renderable getTabs(CommodityTab activeTab) {
-        // TODO: add tabs
-        return new Row(Collections.<Renderable>emptyList());
+        Renderable buyButton = new TabButton(CommodityTab.BUY, activeTab, Keyboard.KEY_B);
+        Renderable sellButton = new TabButton(CommodityTab.SELL, activeTab, Keyboard.KEY_S);
+        return new Row(Arrays.asList(buyButton, sellButton));
     }
 
     private TableContent getTableContent(String commodityId, CommodityTab activeTab) {

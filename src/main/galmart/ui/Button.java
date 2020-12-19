@@ -12,17 +12,19 @@ public class Button extends Renderable implements Callable {
 
     private final Size size;
     private final String title;
-    private final Color color;
+    private Color color;
     private boolean isEnabled;
     private Callable callback;
-    protected CutStyle cutStyle;
+    private CutStyle cutStyle;
+    private int shortcut;
 
     public Button(Size size, String title, boolean isEnabled, Color color) {
         this.size = size;
         this.title = title;
         this.isEnabled = isEnabled;
         this.color = color;
-        this.cutStyle = CutStyle.C2_MENU;
+        this.cutStyle = CutStyle.ALL;
+        this.shortcut = 0;
     }
 
     public String getTitle() {
@@ -41,8 +43,16 @@ public class Button extends Renderable implements Callable {
         this.callback = callback;
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void setCutStyle(CutStyle cutStyle) {
         this.cutStyle = cutStyle;
+    }
+
+    public void setShortcut(int shortcut) {
+        this.shortcut = shortcut;
     }
 
     public Color getColor() {
@@ -66,7 +76,10 @@ public class Button extends Renderable implements Callable {
         Color foregroundColor = getColor();
         Color backgroundColor = Misc.scaleColor(foregroundColor, 0.5f);
         ButtonAPI button = tooltip.addButton(title, this, foregroundColor, backgroundColor, Alignment.MID, cutStyle,
-                size.getWidth() - 5f, size.getHeigth() - 5f, 5f);
+                size.getWidth() - 4f, size.getHeigth() - 4f, 4f);
         button.setEnabled(isEnabled);
+        if (shortcut > 0) {
+            button.setShortcut(shortcut, false);
+        }
     }
 }
