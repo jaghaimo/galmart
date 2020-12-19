@@ -20,7 +20,12 @@ import galmart.ui.Size;
 
 public class GalmartBoard extends BaseIntelPlugin {
 
+    public enum CommodityTab {
+        BUY, SELL;
+    }
+
     private String activeId;
+    private CommodityTab activeTab;
     private ButtonViewFactory buttonViewFactory;
     private CommodityViewFactory commodityViewFactory;
     private IntelManager intelManager;
@@ -37,11 +42,7 @@ public class GalmartBoard extends BaseIntelPlugin {
     }
 
     public GalmartBoard() {
-        activeId = Commodities.SUPPLIES;
-        buttonViewFactory = new ButtonViewFactory();
-        commodityViewFactory = new CommodityViewFactory();
-        intelManager = new IntelManager();
-        intelFactory = new IntelFactory();
+        readResolve();
     }
 
     @Override
@@ -58,9 +59,11 @@ public class GalmartBoard extends BaseIntelPlugin {
 
     @Override
     public void createLargeDescription(CustomPanelAPI panel, float width, float height) {
+        float commodityViewWidth = width - 210;
         GridRenderer renderer = new GridRenderer(new Size(width, height));
-        renderer.setTopLeft(commodityViewFactory.get(activeId, width - 210, height));
+        renderer.setTopLeft(commodityViewFactory.get(activeId, activeTab, commodityViewWidth, height));
         renderer.setTopRight(buttonViewFactory.get(activeId));
+        // TODO: add buttons to issue intel
         renderer.render(panel);
     }
 
@@ -94,13 +97,20 @@ public class GalmartBoard extends BaseIntelPlugin {
         }
     }
 
-    public void setActive(String commodityId) {
-        this.activeId = commodityId;
+    public void setActiveId(String activeId) {
+        this.activeId = activeId;
+    }
+
+    public void setActiveTab(CommodityTab activeTab) {
+        this.activeTab = activeTab;
     }
 
     protected Object readResolve() {
         if (activeId == null) {
             activeId = Commodities.SUPPLIES;
+        }
+        if (activeTab == null) {
+            activeTab = CommodityTab.BUY;
         }
         if (buttonViewFactory == null) {
             buttonViewFactory = new ButtonViewFactory();

@@ -1,16 +1,17 @@
 package galmart.intel.element;
 
+import java.util.Collections;
+
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 
 import galmart.extractor.BuyFromMarketExtractor;
 import galmart.extractor.BuyFromMarketFactory;
 import galmart.extractor.SellOnMarketExtractor;
 import galmart.extractor.SellOnMarketFactory;
-import galmart.ui.Padding;
-import galmart.ui.Paragraph;
+import galmart.intel.GalmartBoard.CommodityTab;
 import galmart.ui.Renderable;
+import galmart.ui.Row;
 import galmart.ui.Stack;
 import galmart.ui.Table;
 import galmart.ui.TableContent;
@@ -23,22 +24,28 @@ public class CommodityViewFactory {
         economy = Global.getSector().getEconomy();
     }
 
-    public Renderable get(String commodityId, float width, float height) {
-        String commodityName = getCommodityName(commodityId);
-        float paddingHeight = 5f;
-        float labelHeight = 25f;
-        float tableHeight = (height / 2) - labelHeight - paddingHeight;
-        TableContent buyTableContent = getBuyTableContent(commodityId);
-        TableContent sellTableContent = getSellTableContent(commodityId);
-        return new Stack(new Paragraph("Best places to sell " + commodityName + ":", width), new Padding(5f),
-                new Table(commodityId, width, tableHeight, sellTableContent), new Padding(5),
-                new Paragraph("Best places to buy " + commodityName + ":", width), new Padding(5),
-                new Table(commodityId, width, tableHeight, buyTableContent));
+    public Renderable get(String commodityId, CommodityTab activeTab, float width, float height) {
+        float tabsHeight = 15f;
+        float tableHeight = height - tabsHeight;
+        TableContent tableContent = getTableContent(commodityId, activeTab);
+        Renderable tabs = getTabs(activeTab);
+        Renderable table = new Table(commodityId, width, tableHeight, tableContent);
+        return new Stack(tabs, table);
     }
 
-    private String getCommodityName(String commodityId) {
-        CommoditySpecAPI commodity = economy.getCommoditySpec(commodityId);
-        return commodity.getName();
+    private Renderable getTabs(CommodityTab activeTab) {
+        // TODO: add tabs
+        return new Row(Collections.<Renderable>emptyList());
+    }
+
+    private TableContent getTableContent(String commodityId, CommodityTab activeTab) {
+        TableContent tableContent = null;
+        if (activeTab == CommodityTab.BUY) {
+            tableContent = getBuyTableContent(commodityId);
+        } else if (activeTab == CommodityTab.SELL) {
+            tableContent = getSellTableContent(commodityId);
+        }
+        return tableContent;
     }
 
     private TableContent getBuyTableContent(String commodityId) {
