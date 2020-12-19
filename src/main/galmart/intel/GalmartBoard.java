@@ -41,6 +41,7 @@ public class GalmartBoard extends BaseIntelPlugin {
         buttonViewFactory = new ButtonViewFactory();
         commodityViewFactory = new CommodityViewFactory();
         intelManager = new IntelManager();
+        intelFactory = new IntelFactory();
     }
 
     @Override
@@ -109,6 +110,9 @@ public class GalmartBoard extends BaseIntelPlugin {
         }
         if (intelManager == null) {
             intelManager = new IntelManager();
+        }
+        if (intelFactory == null) {
+            intelFactory = new IntelFactory();
         }
         return this;
     }

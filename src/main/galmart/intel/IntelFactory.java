@@ -3,6 +3,7 @@ package galmart.intel;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
@@ -15,8 +16,8 @@ public class IntelFactory {
 
     private EconomyAPI economy;
 
-    public IntelFactory(EconomyAPI economy) {
-        this.economy = economy;
+    public IntelFactory() {
+        this.economy = Global.getSector().getEconomy();
     }
 
     public List<GalmartIntel> get(String commodityId) {
