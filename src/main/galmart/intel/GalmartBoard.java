@@ -28,7 +28,7 @@ public class GalmartBoard extends BaseIntelPlugin {
 
     public static GalmartBoard getInstance() {
         IntelManager intelManager = new IntelManager();
-        IntelInfoPlugin intel = intelManager.get(GalmartIntel.class);
+        IntelInfoPlugin intel = intelManager.get(GalmartBoard.class);
         if (intel == null) {
             intel = new GalmartBoard();
             intelManager.add(intel);
