@@ -18,11 +18,11 @@ public class BuyTableContent extends MarketTableContent {
     }
 
     @Override
-    protected Object[] getRow(MarketAPI market) {
+    protected Object[] getRow(int i, MarketAPI market) {
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
         float price = getPrice(market);
         int available = helper.getAvailable(commodity);
         int excess = commodity.getExcessQuantity();
-        return getRow(market, commodity, price, available, excess);
+        return getRow(i, market, commodity, price, available, excess);
     }
 }

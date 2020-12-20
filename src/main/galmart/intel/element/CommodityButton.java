@@ -21,7 +21,6 @@ public class CommodityButton extends ToggleButton {
                 String commodityId = commodity.getId();
                 GalmartBoard board = GalmartBoard.getInstance();
                 board.setActiveId(commodityId);
-                board.issueIntel(commodityId);
             }
         });
     }

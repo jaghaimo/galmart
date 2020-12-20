@@ -29,6 +29,10 @@ public class GalmartIntel extends BaseIntelPlugin {
     }
 
     @Override
+    public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
+    }
+
+    @Override
     public SectorEntityToken getMapLocation(SectorMapAPI map) {
         return market.getPrimaryEntity();
     }
@@ -46,12 +50,17 @@ public class GalmartIntel extends BaseIntelPlugin {
     }
 
     @Override
+    public IntelSortTier getSortTier() {
+        return IntelSortTier.TIER_1;
+    }
+
+    @Override
     public boolean hasLargeDescription() {
         return false;
     }
 
     @Override
     public boolean hasSmallDescription() {
-        return false;
+        return true;
     }
 }

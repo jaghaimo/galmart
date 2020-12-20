@@ -1,6 +1,5 @@
 package galmart.intel;
 
-import java.util.List;
 import java.util.Set;
 
 import com.fs.starfarer.api.Global;
@@ -14,6 +13,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 
 import galmart.intel.element.ButtonViewFactory;
 import galmart.intel.element.CommodityViewFactory;
+import galmart.intel.element.IntelSelectionFactory;
 import galmart.ui.Callable;
 import galmart.ui.GridRenderer;
 import galmart.ui.Size;
@@ -34,8 +34,8 @@ public class GalmartBoard extends BaseIntelPlugin {
     private CommodityTab activeTab;
     private ButtonViewFactory buttonViewFactory;
     private CommodityViewFactory commodityViewFactory;
+    private IntelSelectionFactory intelSelectionFactory;
     private IntelManager intelManager;
-    private IntelFactory intelFactory;
 
     public static GalmartBoard getInstance() {
         IntelManager intelManager = new IntelManager();
@@ -66,10 +66,11 @@ public class GalmartBoard extends BaseIntelPlugin {
     @Override
     public void createLargeDescription(CustomPanelAPI panel, float width, float height) {
         float commodityViewWidth = width - 210;
+        float commodityViewHeight = height - 35;
         GridRenderer renderer = new GridRenderer(new Size(width, height));
-        renderer.setTopLeft(commodityViewFactory.get(activeId, activeTab, commodityViewWidth, height));
+        renderer.setTopLeft(commodityViewFactory.get(activeId, activeTab, commodityViewWidth, commodityViewHeight));
         renderer.setTopRight(buttonViewFactory.get(activeId));
-        // TODO: add buttons to issue intel
+        renderer.setBottomLeft(intelSelectionFactory.get(activeId, activeTab, commodityViewWidth));
         renderer.render(panel);
     }
 
@@ -86,6 +87,11 @@ public class GalmartBoard extends BaseIntelPlugin {
     }
 
     @Override
+    public IntelSortTier getSortTier() {
+        return IntelSortTier.TIER_0;
+    }
+
+    @Override
     public boolean hasLargeDescription() {
         return true;
     }
@@ -93,14 +99,6 @@ public class GalmartBoard extends BaseIntelPlugin {
     @Override
     public boolean hasSmallDescription() {
         return false;
-    }
-
-    public void issueIntel(String commodityId) {
-        intelManager.remove(GalmartIntel.class);
-        List<GalmartIntel> intels = intelFactory.get(commodityId);
-        for (GalmartIntel intel : intels) {
-            intelManager.add(intel);
-        }
     }
 
     public void setActiveId(String activeId) {
@@ -121,14 +119,14 @@ public class GalmartBoard extends BaseIntelPlugin {
         if (buttonViewFactory == null) {
             buttonViewFactory = new ButtonViewFactory();
         }
-        if (commodityViewFactory == null) {
-            commodityViewFactory = new CommodityViewFactory();
+        if (intelSelectionFactory == null) {
+            intelSelectionFactory = new IntelSelectionFactory();
         }
+        // if (commodityViewFactory == null) {
+        commodityViewFactory = new CommodityViewFactory(intelSelectionFactory);
+        // }
         if (intelManager == null) {
             intelManager = new IntelManager();
-        }
-        if (intelFactory == null) {
-            intelFactory = new IntelFactory();
         }
         return this;
     }

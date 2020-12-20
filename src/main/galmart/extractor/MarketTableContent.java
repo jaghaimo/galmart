@@ -32,46 +32,56 @@ public abstract class MarketTableContent implements TableContent {
     @Override
     public List<Object[]> getRows() {
         List<Object[]> content = new ArrayList<>();
+        int i = 1;
         for (MarketAPI market : markets) {
-            Object[] row = getRow(market);
+            Object[] row = getRow(i++, market);
             content.add(row);
         }
         return content;
     }
 
+    @Override
+    public int getSize() {
+        return markets.size();
+    }
+
     protected Object[] getHeader(float width, String availableOrDemand, String excessOrDeficit) {
-        Object header[] = { "Price", .10f * width, availableOrDemand, .1f * width, excessOrDeficit, .1f * width,
-                "Location", .35f * width, "Star system", .2f * width, "Dist (ly)", .1f * width };
+        Object header[] = { "#", .05f * width, "Price", .1f * width, availableOrDemand, .1f * width, excessOrDeficit,
+                .1f * width, "Location", .3f * width, "Star system", .2f * width, "Dist (ly)", .1f * width };
         return header;
     }
 
-    protected Object[] getRow(MarketAPI market, CommodityOnMarketAPI commodity, float price, int available,
+    protected Object[] getRow(int i, MarketAPI market, CommodityOnMarketAPI commodity, float price, int available,
             int excess) {
-        Object[] row = new Object[18];
-        // Price
+        Object[] row = new Object[21];
+        // Position
         row[0] = Alignment.MID;
-        row[1] = Misc.getHighlightColor();
-        row[2] = Misc.getDGSCredits(price);
-        // Available or Demand
+        row[1] = Misc.getGrayColor();
+        row[2] = String.valueOf(i) + ".";
+        // Price
         row[3] = Alignment.MID;
         row[4] = Misc.getHighlightColor();
-        row[5] = Misc.getWithDGS(available);
-        // Excess or Deficit
+        row[5] = Misc.getDGSCredits(price);
+        // Available or Demand
         row[6] = Alignment.MID;
-        row[7] = helper.getExcessColor(excess);
-        row[8] = helper.getExcessValue(excess);
+        row[7] = Misc.getHighlightColor();
+        row[8] = Misc.getWithDGS(available);
+        // Excess or Deficit
+        row[9] = Alignment.MID;
+        row[10] = helper.getExcessColor(excess);
+        row[11] = helper.getExcessValue(excess);
         // Location
-        row[9] = Alignment.LMID;
-        row[10] = market.getTextColorForFactionOrPlanet();
-        row[11] = helper.getLocation(market);
+        row[12] = Alignment.LMID;
+        row[13] = market.getTextColorForFactionOrPlanet();
+        row[14] = helper.getLocation(market);
         // Star system
-        row[12] = Alignment.MID;
-        row[13] = helper.getClaimingFactionColor(market);
-        row[14] = helper.getSystemName(market);
-        // Distance
         row[15] = Alignment.MID;
-        row[16] = Misc.getHighlightColor();
-        row[17] = helper.getDistance(market);
+        row[16] = helper.getClaimingFactionColor(market);
+        row[17] = helper.getSystemName(market);
+        // Distance
+        row[18] = Alignment.MID;
+        row[19] = Misc.getHighlightColor();
+        row[20] = helper.getDistance(market);
 
         return row;
     }
@@ -80,5 +90,5 @@ public abstract class MarketTableContent implements TableContent {
         return price.getPrice(market);
     }
 
-    protected abstract Object[] getRow(MarketAPI market);
+    protected abstract Object[] getRow(int i, MarketAPI market);
 }
