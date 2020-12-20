@@ -10,14 +10,14 @@ import com.fs.starfarer.api.util.Misc;
 
 import galmart.ui.TableContent;
 
-public abstract class MarketExtractor implements TableContent {
+public abstract class MarketTableContent implements TableContent {
 
     protected String commodityId;
     protected TableCellHelper helper;
     private List<MarketAPI> markets;
     private Price price;
 
-    protected MarketExtractor(String commodityId, List<MarketAPI> markets, Price price) {
+    protected MarketTableContent(String commodityId, List<MarketAPI> markets, Price price) {
         this.commodityId = commodityId;
         this.helper = new TableCellHelper();
         this.markets = markets;

@@ -6,23 +6,23 @@ import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
-public class SellOnMarketExtractor extends MarketExtractor {
+public class BuyTableContent extends MarketTableContent {
 
-    public SellOnMarketExtractor(String commodityId, List<MarketAPI> markets, EconomyAPI economy) {
-        super(commodityId, markets, new DemandPrice(commodityId, economy));
+    public BuyTableContent(String commodityId, List<MarketAPI> markets, EconomyAPI economy) {
+        super(commodityId, markets, new SupplyPrice(commodityId, economy));
     }
 
     @Override
     public Object[] getHeaders(float width) {
-        return getHeader(width, "Demand", "Deficit");
+        return getHeader(width, "Available", "Excess");
     }
 
     @Override
     protected Object[] getRow(MarketAPI market) {
         CommodityOnMarketAPI commodity = market.getCommodityData(commodityId);
         float price = getPrice(market);
-        int demand = helper.getDemand(market, commodity);
-        int deficit = -commodity.getDeficitQuantity();
-        return getRow(market, commodity, price, demand, deficit);
+        int available = helper.getAvailable(commodity);
+        int excess = commodity.getExcessQuantity();
+        return getRow(market, commodity, price, available, excess);
     }
 }

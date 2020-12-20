@@ -8,20 +8,20 @@ import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 import galmart.CollectionsHelper;
-import galmart.filter.market.CommodityDemandFilter;
+import galmart.filter.market.CommodityAvailableFilter;
 
-public class SellOnMarketFactory extends MarketFactory {
+public class BuyMarketFactory extends MarketFactory {
 
-    private DemandPrice price;
+    private SupplyPrice price;
 
-    public SellOnMarketFactory(String commodityId, EconomyAPI economy) {
+    public BuyMarketFactory(String commodityId, EconomyAPI economy) {
         super(commodityId, economy);
-        this.price = new DemandPrice(commodityId, economy);
+        this.price = new SupplyPrice(commodityId, economy);
     }
 
     @Override
     protected void filterMarkets(List<MarketAPI> markets) {
-        CollectionsHelper.reduce(markets, new CommodityDemandFilter(commodityId, economy));
+        CollectionsHelper.reduce(markets, new CommodityAvailableFilter(commodityId, economy));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SellOnMarketFactory extends MarketFactory {
             public int compare(MarketAPI marketA, MarketAPI marketB) {
                 float priceA = getPrice(marketA);
                 float priceB = getPrice(marketB);
-                return (int) Math.signum(priceB - priceA);
+                return (int) Math.signum(priceA - priceB);
             }
         });
     }

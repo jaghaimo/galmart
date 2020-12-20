@@ -8,9 +8,9 @@ import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
 import galmart.GalmartMod;
-import galmart.extractor.BuyFromMarketFactory;
+import galmart.extractor.BuyMarketFactory;
 import galmart.extractor.MarketFactory;
-import galmart.extractor.SellOnMarketFactory;
+import galmart.extractor.SellMarketFactory;
 
 public class IntelFactory {
 
@@ -22,8 +22,8 @@ public class IntelFactory {
 
     public List<GalmartIntel> get(String commodityId) {
         List<GalmartIntel> intels = new LinkedList<>();
-        intels.addAll(getIntels("Buy", commodityId, new BuyFromMarketFactory(commodityId, economy)));
-        intels.addAll(getIntels("Sell", commodityId, new SellOnMarketFactory(commodityId, economy)));
+        intels.addAll(getIntels("Buy", commodityId, new BuyMarketFactory(commodityId, economy)));
+        intels.addAll(getIntels("Sell", commodityId, new SellMarketFactory(commodityId, economy)));
         return intels;
     }
 

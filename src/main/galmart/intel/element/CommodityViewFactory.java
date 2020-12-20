@@ -7,10 +7,10 @@ import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 
 import org.lwjgl.input.Keyboard;
 
-import galmart.extractor.BuyFromMarketExtractor;
-import galmart.extractor.BuyFromMarketFactory;
-import galmart.extractor.SellOnMarketExtractor;
-import galmart.extractor.SellOnMarketFactory;
+import galmart.extractor.BuyTableContent;
+import galmart.extractor.BuyMarketFactory;
+import galmart.extractor.SellTableContent;
+import galmart.extractor.SellMarketFactory;
 import galmart.intel.GalmartBoard.CommodityTab;
 import galmart.ui.Renderable;
 import galmart.ui.Row;
@@ -52,12 +52,12 @@ public class CommodityViewFactory {
     }
 
     private TableContent getBuyTableContent(String commodityId) {
-        BuyFromMarketFactory factory = new BuyFromMarketFactory(commodityId, economy);
-        return new BuyFromMarketExtractor(commodityId, factory.getMarkets(), economy);
+        BuyMarketFactory factory = new BuyMarketFactory(commodityId, economy);
+        return new BuyTableContent(commodityId, factory.getMarkets(), economy);
     }
 
     private TableContent getSellTableContent(String commodityId) {
-        SellOnMarketFactory factory = new SellOnMarketFactory(commodityId, economy);
-        return new SellOnMarketExtractor(commodityId, factory.getMarkets(), economy);
+        SellMarketFactory factory = new SellMarketFactory(commodityId, economy);
+        return new SellTableContent(commodityId, factory.getMarkets(), economy);
     }
 }
