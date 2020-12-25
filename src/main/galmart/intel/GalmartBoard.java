@@ -35,7 +35,6 @@ public class GalmartBoard extends BaseIntelPlugin {
     private ButtonViewFactory buttonViewFactory;
     private CommodityViewFactory commodityViewFactory;
     private IntelSelectionFactory intelSelectionFactory;
-    private IntelManager intelManager;
 
     public static GalmartBoard getInstance() {
         IntelManager intelManager = new IntelManager();
@@ -119,15 +118,12 @@ public class GalmartBoard extends BaseIntelPlugin {
         if (buttonViewFactory == null) {
             buttonViewFactory = new ButtonViewFactory();
         }
-        if (intelSelectionFactory == null) {
-            intelSelectionFactory = new IntelSelectionFactory();
-        }
+        // if (intelSelectionFactory == null) {
+        intelSelectionFactory = new IntelSelectionFactory();
+        // }
         // if (commodityViewFactory == null) {
         commodityViewFactory = new CommodityViewFactory(intelSelectionFactory);
         // }
-        if (intelManager == null) {
-            intelManager = new IntelManager();
-        }
         return this;
     }
 }

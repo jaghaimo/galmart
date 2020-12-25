@@ -7,23 +7,22 @@ import com.fs.starfarer.api.ui.CutStyle;
 import com.fs.starfarer.api.util.Misc;
 
 import galmart.KeyboardHelper;
-import galmart.intel.GalmartIntel;
-import galmart.intel.IntelManager;
-import galmart.ui.Button;
+import galmart.intel.IntelTracker;
 import galmart.ui.Callable;
 import galmart.ui.Size;
+import galmart.ui.ToggleButton;
 
-public class IntelButton extends Button {
+public class IntelButton extends ToggleButton {
 
-    public IntelButton(int i, final String action, final String commodityId, final MarketAPI market) {
-        super(new Size(28f, 24f), String.valueOf(i), true, Misc.getTextColor());
+    public IntelButton(int i, final String action, final String commodityId, final MarketAPI market,
+            final IntelTracker tracker) {
+        super(new Size(28f, 24f), String.valueOf(i), String.valueOf(i), true, Misc.getTextColor(), Misc.getGrayColor(),
+                tracker.has(action, commodityId, market));
         setCallback(new Callable() {
 
             @Override
             public void callback() {
-                IntelManager manager = new IntelManager();
-                GalmartIntel intel = new GalmartIntel(action, commodityId, market);
-                manager.add(intel);
+                tracker.toggle(action, commodityId, market);
                 KeyboardHelper.send(KeyEvent.VK_E);
             }
         });

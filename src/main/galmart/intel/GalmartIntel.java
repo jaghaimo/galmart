@@ -25,6 +25,7 @@ public class GalmartIntel extends BaseIntelPlugin {
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         info.addPara(action + " " + commodity.getName(), 0f, getTitleColor(mode));
+        info.addPara(market.getName(), 1f);
         // TODO: price, market, system
     }
 

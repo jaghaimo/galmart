@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
+import galmart.intel.IntelTracker;
 import galmart.intel.GalmartBoard.CommodityTab;
 import galmart.ui.Renderable;
 import galmart.ui.Row;
@@ -13,9 +14,11 @@ import galmart.ui.Row;
 public class IntelSelectionFactory {
 
     private List<MarketAPI> markets;
+    private IntelTracker tracker;
 
     public IntelSelectionFactory() {
         markets = Collections.<MarketAPI>emptyList();
+        tracker = new IntelTracker();
     }
 
     public Renderable get(String commodityId, CommodityTab actionTab, float width) {
@@ -25,7 +28,7 @@ public class IntelSelectionFactory {
         List<Renderable> buttons = new LinkedList<>();
         for (int i = 0; i < numberOfButtons; i++) {
             MarketAPI market = markets.get(i);
-            buttons.add((Renderable) new IntelButton(i + 1, actionTab.title, commodityId, market));
+            buttons.add((Renderable) new IntelButton(i + 1, actionTab.title, commodityId, market, tracker));
         }
         return new Row(buttons);
     }
