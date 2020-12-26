@@ -118,12 +118,12 @@ public class GalmartBoard extends BaseIntelPlugin {
         if (buttonViewFactory == null) {
             buttonViewFactory = new ButtonViewFactory();
         }
-        // if (intelSelectionFactory == null) {
-        intelSelectionFactory = new IntelSelectionFactory();
-        // }
-        // if (commodityViewFactory == null) {
-        commodityViewFactory = new CommodityViewFactory(intelSelectionFactory);
-        // }
+        if (intelSelectionFactory == null) {
+            intelSelectionFactory = new IntelSelectionFactory();
+        }
+        if (commodityViewFactory == null) {
+            commodityViewFactory = new CommodityViewFactory(intelSelectionFactory);
+        }
         return this;
     }
 }
