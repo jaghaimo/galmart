@@ -3,18 +3,18 @@ package galmart.intel;
 import java.awt.Color;
 import java.util.Set;
 
+import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.characters.RelationshipAPI;
 import com.fs.starfarer.api.impl.campaign.intel.BaseIntelPlugin;
+import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 
-import org.lwjgl.input.Keyboard;
-
-import galmart.KeyboardHelper;
 import galmart.extractor.TableCellHelper;
 
 public class GalmartIntel extends BaseIntelPlugin {
@@ -37,7 +37,7 @@ public class GalmartIntel extends BaseIntelPlugin {
     @Override
     public void buttonPressConfirmed(Object buttonId, IntelUIAPI ui) {
         tracker.remove(this);
-        KeyboardHelper.send(Keyboard.KEY_E);
+        ui.recreateIntelUI();
     }
 
     @Override
@@ -54,7 +54,15 @@ public class GalmartIntel extends BaseIntelPlugin {
 
     @Override
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
-        info.addButton("Delete", null, width, 20f, 5f);
+        FactionAPI faction = market.getFaction();
+        RelationshipAPI relationship = faction.getRelToPlayer();
+        String reputation = relationship.getLevel().getDisplayName();
+        info.addSectionHeading(market.getName(), faction.getBaseUIColor(), faction.getDarkUIColor(), Alignment.MID, 5f);
+        info.addImage(faction.getLogo(), width, 128, 10f);
+        info.addPara("The owner of this market is " + reputation.toLowerCase() + " towards you.", 10f,
+                Misc.getTextColor(), relationship.getRelColor(), reputation.toLowerCase());
+        info.addPara("", 20f);
+        info.addButton("Delete", "DELETE", width, 20f, 5f);
     }
 
     @Override
@@ -112,6 +120,6 @@ public class GalmartIntel extends BaseIntelPlugin {
     }
 
     private String getTitle() {
-        return String.format("%s %s for %.0f", action, commodity.getName(), price);
+        return String.format("%s %s for %s", action, commodity.getName(), Misc.getDGSCredits(price));
     }
 }
