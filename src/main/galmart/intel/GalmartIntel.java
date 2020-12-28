@@ -44,7 +44,7 @@ public class GalmartIntel extends BaseIntelPlugin {
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         TableCellHelper helper = new TableCellHelper();
         Color bulletColor = getBulletColorForMode(mode);
-        info.addPara(getTitle(), 0f, getTitleColor(mode));
+        info.addPara(getTitle(), getTitleColor(mode), 0f);
         info.beginGridFlipped(300f, 1, Misc.getTextColor(), 80f, 10f);
         info.addToGrid(0, 0, market.getName(), "Market", bulletColor);
         info.addToGrid(0, 1, market.getFaction().getDisplayName(), "Faction", bulletColor);
