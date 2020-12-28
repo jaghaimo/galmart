@@ -6,6 +6,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
+import galmart.extractor.Price;
 import galmart.extractor.PriceFactory;
 import galmart.intel.GalmartBoard.CommodityTab;
 
@@ -39,7 +40,7 @@ public class IntelTracker extends HashMap<String, GalmartIntel> {
         GalmartIntel intel = get(key);
         if (intel == null) {
             CommoditySpecAPI commodity = Global.getSector().getEconomy().getCommoditySpec(commodityId);
-            float price = priceFactory.get(commodityId, commodityTab).getPrice(market);
+            Price price = priceFactory.get(commodityId, commodityTab);
             intel = new GalmartIntel(action, commodity, market, this, price);
             manager.add(intel);
             put(key, intel);

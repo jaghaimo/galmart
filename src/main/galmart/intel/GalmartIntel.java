@@ -15,6 +15,7 @@ import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 
+import galmart.extractor.Price;
 import galmart.extractor.TableCellHelper;
 
 public class GalmartIntel extends BaseIntelPlugin {
@@ -23,15 +24,17 @@ public class GalmartIntel extends BaseIntelPlugin {
     private CommoditySpecAPI commodity;
     private MarketAPI market;
     private IntelTracker tracker;
+    private Price priceProvider;
     private float price;
 
     public GalmartIntel(String action, CommoditySpecAPI commodity, MarketAPI market, IntelTracker tracker,
-            float price) {
+            Price priceProvider) {
         this.action = action;
         this.commodity = commodity;
         this.market = market;
         this.tracker = tracker;
-        this.price = price;
+        this.priceProvider = priceProvider;
+        this.price = priceProvider.getPrice(market);
     }
 
     @Override
@@ -100,6 +103,11 @@ public class GalmartIntel extends BaseIntelPlugin {
     @Override
     public boolean hasSmallDescription() {
         return true;
+    }
+
+    @Override
+    public boolean isEnded() {
+        return Math.abs(price - priceProvider.getPrice(market)) > 1;
     }
 
     @Override
