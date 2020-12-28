@@ -2,16 +2,29 @@ package galmart.intel;
 
 import java.util.HashMap;
 
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+
+import galmart.extractor.PriceFactory;
+import galmart.intel.GalmartBoard.CommodityTab;
 
 public class IntelTracker extends HashMap<String, GalmartIntel> {
 
     private static final long serialVersionUID = 1L;
     private IntelManager manager;
+    private PriceFactory priceFactory;
 
     public IntelTracker() {
         super();
         manager = new IntelManager();
+        priceFactory = new PriceFactory();
+    }
+
+    public void remove(GalmartIntel intel) {
+        String key = getKey(intel.getAction(), intel.getCommodityId(), intel.getMarket());
+        manager.remove(intel);
+        remove(key);
     }
 
     public boolean has(String action, String commodityId, MarketAPI market) {
@@ -20,11 +33,14 @@ public class IntelTracker extends HashMap<String, GalmartIntel> {
         return intel != null;
     }
 
-    public void toggle(String action, String commodityId, MarketAPI market) {
+    public void toggle(String commodityId, CommodityTab commodityTab, MarketAPI market) {
+        String action = commodityTab.title;
         String key = getKey(action, commodityId, market);
         GalmartIntel intel = get(key);
         if (intel == null) {
-            intel = new GalmartIntel(action, commodityId, market);
+            CommoditySpecAPI commodity = Global.getSector().getEconomy().getCommoditySpec(commodityId);
+            float price = priceFactory.get(commodityId, commodityTab).getPrice(market);
+            intel = new GalmartIntel(action, commodity, market, this, price);
             manager.add(intel);
             put(key, intel);
         } else {

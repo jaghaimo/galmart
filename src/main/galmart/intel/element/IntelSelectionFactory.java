@@ -28,7 +28,7 @@ public class IntelSelectionFactory {
         List<Renderable> buttons = new LinkedList<>();
         for (int i = 0; i < numberOfButtons; i++) {
             MarketAPI market = markets.get(i);
-            buttons.add((Renderable) new IntelButton(i + 1, actionTab.title, commodityId, market, tracker));
+            buttons.add((Renderable) new IntelButton(i + 1, actionTab, commodityId, market, tracker));
         }
         return new Row(buttons);
     }

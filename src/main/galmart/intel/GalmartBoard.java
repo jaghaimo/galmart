@@ -60,6 +60,7 @@ public class GalmartBoard extends BaseIntelPlugin {
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         info.addPara("Commodity Market", getTitleColor(mode), 0);
+        info.addPara("", 1f);
     }
 
     @Override
