@@ -62,6 +62,11 @@ public class GalmartIntel extends BaseIntelPlugin {
         String reputation = relationship.getLevel().getDisplayName();
         info.addSectionHeading(market.getName(), faction.getBaseUIColor(), faction.getDarkUIColor(), Alignment.MID, 5f);
         info.addImage(faction.getLogo(), width, 128, 10f);
+        if (isEnding()) {
+            info.addPara("The original price of %s has changed to %s.", 5f, Misc.getTextColor(),
+                    Misc.getHighlightColor(), Misc.getDGSCredits(price),
+                    Misc.getDGSCredits(priceProvider.getPrice(market)));
+        }
         info.addPara("The owner of this market is " + reputation.toLowerCase() + " towards you.", 10f,
                 Misc.getTextColor(), relationship.getRelColor(), reputation.toLowerCase());
         info.addPara("", 20f);
@@ -106,7 +111,7 @@ public class GalmartIntel extends BaseIntelPlugin {
     }
 
     @Override
-    public boolean isEnded() {
+    public boolean isEnding() {
         return Math.abs(price - priceProvider.getPrice(market)) > 1;
     }
 
