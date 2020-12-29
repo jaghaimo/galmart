@@ -14,7 +14,7 @@ public class PriceFactory {
     }
 
     public Price get(String commodityId, CommodityTab commodityTab) {
-        Price price = null;
+        Price price = new DummyPrice();
         switch (commodityTab) {
             case BUY:
                 price = new SupplyPrice(commodityId, economy);
