@@ -20,6 +20,12 @@ build {
     }
 }
 
+// create a zip release
+task release(type: Exec) {
+    description 'Create releaseable zip file.'
+    commandLine 'sh', 'util/create-release.sh'
+}
+
 // nuke everything and start over
 clean {
     delete fileTree('.') { include '*.jar' }

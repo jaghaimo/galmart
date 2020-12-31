@@ -11,17 +11,16 @@ import galmart.ui.ToggleButton;
 public class CommodityButton extends ToggleButton {
 
     public CommodityButton(final CommoditySpecAPI commodity, boolean isOn) {
-        super(new Size(200, 25), commodity.getName(), commodity.getName(), true, Misc.getHighlightColor(),
+        super(new Size(200, 24), commodity.getName(), commodity.getName(), true, Misc.getHighlightColor(),
                 Misc.getGrayColor(), isOn);
 
         setCallback(new Callable() {
 
-            String commodityId = commodity.getId();
-
             @Override
             public void callback() {
+                String commodityId = commodity.getId();
                 GalmartBoard board = GalmartBoard.getInstance();
-                board.setActive(commodityId);
+                board.setActiveId(commodityId);
             }
         });
     }
