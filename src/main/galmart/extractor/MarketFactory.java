@@ -5,6 +5,9 @@ import java.util.List;
 import com.fs.starfarer.api.campaign.econ.EconomyAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 
+import galmart.CollectionsHelper;
+import galmart.filter.market.MarketNotHidden;
+
 public abstract class MarketFactory {
 
     protected String commodityId;
@@ -17,6 +20,7 @@ public abstract class MarketFactory {
 
     public List<MarketAPI> getMarkets() {
         List<MarketAPI> markets = economy.getMarketsCopy();
+        CollectionsHelper.reduce(markets, new MarketNotHidden());
         filterMarkets(markets);
         sortMarkets(markets);
         return markets;
