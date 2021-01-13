@@ -1,12 +1,12 @@
+plugins {
+    id 'java'
+}
+
 repositories {
     mavenCentral()
 }
 
-apply plugin: 'java'
-
 // project level config
-sourceSets.main.java.srcDir 'src/main'
-sourceSets.test.java.srcDir 'src/test'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
@@ -18,17 +18,6 @@ build {
             into '.'
         }
     }
-}
-
-// create a zip release
-task release(type: Exec) {
-    description 'Create releaseable zip file.'
-    commandLine 'sh', 'util/create-release.sh'
-}
-
-// nuke everything and start over
-clean {
-    delete fileTree('.') { include '*.jar' }
 }
 
 // compile time dependencies
@@ -44,4 +33,17 @@ dependencies {
 
     // test only
     testImplementation 'junit:junit:4.12'
+}
+
+// create a release zip
+task release(type: Zip) {
+    def jsonFile = file('src/main/resources/mod_info.json')
+    def slurper = new groovy.json.JsonSlurper()
+    def parsedJson = slurper.parse(jsonFile)
+    dependsOn build
+    archiveFileName = "${project.name}-${parsedJson.version}.zip"
+    destinationDirectory = file(rootDir)
+    from sourceSets.main.resources
+    from jar
+    into project.name
 }
